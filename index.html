@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urban Balance Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #1e3a8a, #2563eb, #7c3aed);
+            color: white;
+            padding: 18px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar h2 {
+            font-size: 26px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #dbeafe;
+        }
+
+        .hero {
+            min-height: 95vh;
+            background: linear-gradient(135deg, #dbeafe, #ede9fe, #f8fafc);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(37, 99, 235, 0.18);
+            border-radius: 50%;
+            top: 60px;
+            left: -80px;
+            filter: blur(20px);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            background: rgba(124, 58, 237, 0.18);
+            border-radius: 50%;
+            bottom: 40px;
+            right: -60px;
+            filter: blur(20px);
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.25;
+            z-index: 0;
+        }
+
+        .shape1 {
+            width: 120px;
+            height: 120px;
+            background: #60a5fa;
+            top: 18%;
+            right: 12%;
+        }
+
+        .shape2 {
+            width: 90px;
+            height: 90px;
+            background: #a78bfa;
+            bottom: 18%;
+            left: 12%;
+        }
+
+        .shape3 {
+            width: 60px;
+            height: 60px;
+            background: #38bdf8;
+            top: 50%;
+            right: 30%;
+        }
+
+        .hero-content {
+            max-width: 1100px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: 52px;
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: #475569;
+            margin-bottom: 30px;
+        }
+
+        .hero-buttons a {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            padding: 14px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e3a8a;
+            border: 2px solid #2563eb;
+        }
+
+        .btn-secondary:hover {
+            background: #eff6ff;
+            transform: translateY(-2px);
+        }
+
+        .hero-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(10px);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .hero-card h3 {
+            color: #7c3aed;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .hero-card ul {
+            padding-left: 20px;
+            color: #475569;
+        }
+
+        .section {
+            padding: 70px 20px;
+        }
+
+        .container {
+            max-width: 1150px;
+            margin: auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-title h2 {
+            font-size: 36px;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .card h3 {
+            margin-bottom: 14px;
+            color: #2563eb;
+            font-size: 22px;
+        }
+
+        .card p {
+            color: #475569;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, #1e3a8a, #7c3aed);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.12);
+        }
+
+        .feature-box h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        .feature-box p {
+            font-size: 17px;
+            max-width: 850px;
+            margin: auto;
+        }
+
+        .team-section {
+            background: linear-gradient(135deg, #eff6ff, #f5f3ff);
+            border-radius: 24px;
+            padding: 50px 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 22px;
+            margin-top: 30px;
+        }
+
+        .team-card {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .team-avatar {
+            width: 85px;
+            height: 85px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        .team-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 8px;
+        }
+
+        .team-card p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .team-about {
+            text-align: center;
+            max-width: 850px;
+            margin: 0 auto;
+            color: #475569;
+            font-size: 17px;
+        }
+
+        .footer {
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            padding: 28px 20px;
+            margin-top: 40px;
+        }
+
+        .footer p {
+            color: #cbd5e1;
+        }
+
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 40px;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+            }
+
+            .nav-links a {
+                margin: 0 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <h2>UBMS</h2>
+        <div class="nav-links">
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'signup' %}">Sign Up</a>
+            <a href="{% url 'signin' %}">Sign In</a>
+        </div>
+    </div>
+
+    <section class="hero">
+        <div class="floating-shape shape1"></div>
+        <div class="floating-shape shape2"></div>
+        <div class="floating-shape shape3"></div>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Urban Balance:A Smart City Load Management System</h1>
+                <p>
+                    A smart city platform that helps citizens, policymakers, and corporate leaders
+                    make better decisions through migration insights, urban planning support,
+                    and city-based analysis.
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'signup' %}" class="btn-primary">Get Started</a>
+                    <a href="{% url 'admin_signin' %}" class="btn-secondary">Admin Portal</a>
+                </div>
+            </div>
+
+            <div class="hero-card">
+                <h3>Why this project matters</h3>
+                <ul>
+                    <li>Helps citizens choose better living opportunities</li>
+                    <li>Supports policymakers with migration and infrastructure insights</li>
+                    <li>Helps companies understand growth and relocation possibilities</li>
+                    <li>Promotes smarter, more balanced urban development</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Who Can Use This Platform?</h2>
+                <p>Our system is designed for three important user groups.</p>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Citizens</h3>
+                    <p>
+                        Citizens can share their living conditions, commute experience, and city preferences
+                        to receive better urban recommendations and support future planning.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Policymakers</h3>
+                    <p>
+                        Policymakers can monitor migration patterns, infrastructure pressure,
+                        and city development trends for smarter public decision-making.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Corporate Leaders</h3>
+                    <p>
+                        Corporate leaders can analyze workforce movement, business growth,
+                        infrastructure quality, and relocation opportunities.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Main Features</h2>
+                <p>Powerful functions that make the platform useful and future ready.</p>
+            </div>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Role Based Dashboards</h3>
+                    <p>Separate dashboards for citizens, policymakers, and corporate leaders.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Questionnaire System</h3>
+                    <p>Collects structured data from different users for analysis and planning.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Migration Insights</h3>
+                    <p>Tracks movement between cities and its impact on urban balance.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Smart Planning Support</h3>
+                    <p>Supports future city planning and better development strategies.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Corporate Analysis</h3>
+                    <p>Helps businesses understand workforce and city-based growth conditions.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Scalable Project Design</h3>
+                    <p>Can later include AI predictions, charts, and recommendation systems.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="feature-box">
+                <h2>A Future-Ready Smart City Solution</h2>
+                <p>
+                    Urban Balance Smart City Load Management System is not just a project.
+                    It is a practical idea that connects people, policy, and business
+                    into one intelligent digital platform for smarter urban decision-making.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="team-section">
+                <div class="section-title">
+                    <h2>About Our Team</h2>
+                    <p>Meet the people behind the idea.</p>
+                </div>
+
+                <p class="Team About">
+                    We are a passionate student team working on the Urban Balance Smart City Load Management System
+                    to build a smart platform that connects urban planning, citizen needs, and business strategy.
+                    Our goal is to create a meaningful digital solution that can support better city decisions in the future.
+                </p>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar">A</div>
+                        <h3>Mobussira Tasnim Pushpita</h3>
+                        <p>2311032042</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">B</div>
+                        <h3>Khadija Akter</h3>
+                        <p>2312075642</p>
+                    </div>
+
+                    <div class="team-card">
+                        <div class="team-avatar">C</div>
+                        <h3>Golam Mohiuddin Chowdhury</h3>
+                        <p>2312721042</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="footer">
+        <p>Urban Balance:A Smart City Load Management System © 2026 | Designed for Smart City Innovation</p>
+    </div>
+
+</body>
+</html>

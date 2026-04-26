@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Policy Maker Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #0f766e;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 24px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            background: #dc2626;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1300px;
+            margin: 30px auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #ccfbf1, #f0fdfa);
+            padding: 30px;
+            border-radius: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 24px rgba(15, 118, 110, 0.12);
+        }
+
+        .hero h1 {
+            color: #0f766e;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .hero p {
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card,
+        .form-section,
+        .recommendation-card,
+        .bottom-box {
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .summary-card {
+            padding: 22px;
+        }
+
+        .summary-card h3 {
+            font-size: 15px;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .summary-card p {
+            font-size: 26px;
+            font-weight: bold;
+            color: #0f766e;
+        }
+
+        .form-section {
+            padding: 28px;
+            margin-bottom: 35px;
+        }
+
+        .form-section h2,
+        .section-title,
+        .bottom-box h2 {
+            color: #0f766e;
+            margin-bottom: 10px;
+        }
+
+        .form-section p,
+        .section-subtitle {
+            color: #64748b;
+            margin-bottom: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+        }
+
+        .form-group textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn-save {
+            margin-top: 22px;
+            background: #0f766e;
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .section-title {
+            font-size: 25px;
+            margin-top: 15px;
+        }
+
+        .recommendation-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 35px;
+        }
+
+        .recommendation-card {
+            padding: 22px;
+            border-top: 8px solid #94a3b8;
+        }
+
+        .recommendation-card.best {
+            border-top-color: #16a34a;
+        }
+
+        .recommendation-card.good {
+            border-top-color: #2563eb;
+        }
+
+        .recommendation-card.moderate {
+            border-top-color: #f59e0b;
+        }
+
+        .rank-badge {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 14px;
+        }
+
+        .best .rank-badge {
+            background: #16a34a;
+        }
+
+        .good .rank-badge {
+            background: #2563eb;
+        }
+
+        .moderate .rank-badge {
+            background: #f59e0b;
+        }
+
+        .recommendation-card h3 {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: #0f172a;
+        }
+
+        .score {
+            font-size: 22px;
+            font-weight: bold;
+            color: #0f766e;
+            margin-bottom: 15px;
+        }
+
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .metric-box {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .metric-box span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 4px;
+        }
+
+        .metric-box strong {
+            font-size: 17px;
+            color: #0f172a;
+        }
+
+        .problems {
+            margin-top: 14px;
+        }
+
+        .problems h4,
+        .action h4 {
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .problems ul {
+            padding-left: 20px;
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .action {
+            background: #ecfeff;
+            border-left: 4px solid #0f766e;
+            padding: 14px;
+            border-radius: 12px;
+            margin-top: 16px;
+            color: #334155;
+            line-height: 1.5;
+        }
+
+        .source {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        .bottom-box {
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-bottom: 5px;
+        }
+
+        .insight-card {
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            padding: 22px;
+            border-left: 5px solid #0f766e;
+        }
+
+        .insight-card h3 {
+            color: #0f172a;
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .mini-metric-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .mini-metric {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+        }
+
+        .mini-metric span {
+            display: block;
+            color: #64748b;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+
+        .mini-metric strong {
+            color: #0f172a;
+            font-size: 16px;
+        }
+
+        .change-good strong {
+            color: #16a34a;
+        }
+
+        .change-bad strong {
+            color: #dc2626;
+        }
+
+        .change-neutral strong {
+            color: #64748b;
+        }
+
+        .roi-label {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #ecfeff;
+            color: #0f766e;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .progress-track {
+            width: 100%;
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 999px;
+            overflow: hidden;
+            margin: 10px 0 12px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: #0f766e;
+            border-radius: 999px;
+        }
+
+        @media (max-width: 1000px) {
+            .recommendation-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <h2>Policy Maker Dashboard</h2>
+        <a href="{% url 'signout' %}">Sign Out</a>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome, {{ request.user.username }} 👋</h1>
+            <p>
+                This dashboard uses real-time AQI/PM2.5, traffic information, saved citizen responses,
+                external Google Form survey data, and your policy priorities to recommend cities for policy action.
+            </p>
+        </div>
+
+        {% if success %}
+            <div class="success-message">
+                Your policy questionnaire has been saved successfully. Recommendations were updated.
+            </div>
+        {% endif %}
+
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Current Role</h3>
+                <p>Policy Maker</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Citizen Inputs Used</h3>
+                <p>{{ total_citizen_inputs }}</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Policy Form Status</h3>
+                <p>{% if policymaker_data.target_city %}Saved{% else %}Pending{% endif %}</p>
+            </div>
+
+            <div class="summary-card">
+                <h3>Recommendation Engine</h3>
+                <p>Active</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Policy Maker Questionnaire</h2>
+            <p>
+                Fill this first. Your answers will immediately influence the recommendation ranking below.
+            </p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="target_city">Target City</label>
+                        <input type="text" id="target_city" name="target_city"
+                               value="{{ policymaker_data.target_city|default:'' }}"
+                               placeholder="Example: Dhaka">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="policy_focus">Policy Focus</label>
+                        <select id="policy_focus" name="policy_focus">
+                            <option value="">Select policy focus</option>
+                            <option value="housing" {% if policymaker_data.policy_focus == 'housing' %}selected{% endif %}>Housing</option>
+                            <option value="transport" {% if policymaker_data.policy_focus == 'transport' %}selected{% endif %}>Transport</option>
+                            <option value="employment" {% if policymaker_data.policy_focus == 'employment' %}selected{% endif %}>Employment</option>
+                            <option value="healthcare" {% if policymaker_data.policy_focus == 'healthcare' %}selected{% endif %}>Healthcare</option>
+                            <option value="environment" {% if policymaker_data.policy_focus == 'environment' %}selected{% endif %}>Environment</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="migration_trend">Citizen Migration Trend</label>
+                        <select id="migration_trend" name="migration_trend">
+                            <option value="">Select trend</option>
+                            <option value="increasing" {% if policymaker_data.migration_trend == 'increasing' %}selected{% endif %}>Increasing</option>
+                            <option value="stable" {% if policymaker_data.migration_trend == 'stable' %}selected{% endif %}>Stable</option>
+                            <option value="decreasing" {% if policymaker_data.migration_trend == 'decreasing' %}selected{% endif %}>Decreasing</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="infrastructure_pressure">Infrastructure Pressure</label>
+                        <select id="infrastructure_pressure" name="infrastructure_pressure">
+                            <option value="">Select level</option>
+                            <option value="low" {% if policymaker_data.infrastructure_pressure == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if policymaker_data.infrastructure_pressure == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if policymaker_data.infrastructure_pressure == 'high' %}selected{% endif %}>High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="housing_status">Housing Status</label>
+                        <select id="housing_status" name="housing_status">
+                            <option value="">Select status</option>
+                            <option value="good" {% if policymaker_data.housing_status == 'good' %}selected{% endif %}>Good</option>
+                            <option value="average" {% if policymaker_data.housing_status == 'average' %}selected{% endif %}>Average</option>
+                            <option value="poor" {% if policymaker_data.housing_status == 'poor' %}selected{% endif %}>Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="transport_status">Transport Status</label>
+                        <select id="transport_status" name="transport_status">
+                            <option value="">Select status</option>
+                            <option value="good" {% if policymaker_data.transport_status == 'good' %}selected{% endif %}>Good</option>
+                            <option value="average" {% if policymaker_data.transport_status == 'average' %}selected{% endif %}>Average</option>
+                            <option value="poor" {% if policymaker_data.transport_status == 'poor' %}selected{% endif %}>Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employment_status">Employment Status</label>
+                        <select id="employment_status" name="employment_status">
+                            <option value="">Select status</option>
+                            <option value="good" {% if policymaker_data.employment_status == 'good' %}selected{% endif %}>Good</option>
+                            <option value="average" {% if policymaker_data.employment_status == 'average' %}selected{% endif %}>Average</option>
+                            <option value="poor" {% if policymaker_data.employment_status == 'poor' %}selected{% endif %}>Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="environmental_status">Environmental Status</label>
+                        <select id="environmental_status" name="environmental_status">
+                            <option value="">Select status</option>
+                            <option value="good" {% if policymaker_data.environmental_status == 'good' %}selected{% endif %}>Good</option>
+                            <option value="average" {% if policymaker_data.environmental_status == 'average' %}selected{% endif %}>Average</option>
+                            <option value="poor" {% if policymaker_data.environmental_status == 'poor' %}selected{% endif %}>Poor</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="budget_level">Budget Level</label>
+                        <select id="budget_level" name="budget_level">
+                            <option value="">Select budget level</option>
+                            <option value="low" {% if policymaker_data.budget_level == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if policymaker_data.budget_level == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if policymaker_data.budget_level == 'high' %}selected{% endif %}>High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="policy_notes">Policy Notes</label>
+                        <textarea id="policy_notes" name="policy_notes"
+                                  placeholder="Write policy observations...">{{ policymaker_data.policy_notes|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-save">Save & Update Recommendations</button>
+            </form>
+        </div>
+
+        <h2 class="section-title">Top City Recommendations</h2>
+        <p class="section-subtitle">
+            Ranked as Best, Good, and Moderate using real city data, AQI/PM2.5, traffic, citizen survey responses,
+            and your policy questionnaire.
+        </p>
+
+        <div class="recommendation-grid">
+            {% for rec in recommendations %}
+                <div class="recommendation-card {{ rec.rank_class }}">
+                    <span class="rank-badge">{{ rec.rank }}</span>
+
+                    <h3>{{ rec.city }}</h3>
+                    <p class="score">Policy Priority Score: {{ rec.score }}/100</p>
+
+                    <div class="metric-grid">
+                        <div class="metric-box">
+                            <span>PM2.5</span>
+                            <strong>{% if rec.pm25 is not None %}{{ rec.pm25 }}{% else %}N/A{% endif %}</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>AQI</span>
+                            <strong>{% if rec.aqi is not None %}{{ rec.aqi }}{% else %}N/A{% endif %}</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Traffic Time</span>
+                            <strong>{% if rec.traffic is not None %}{{ rec.traffic }} min{% else %}N/A{% endif %}</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Citizen Need</span>
+                            <strong>{{ rec.citizen_score }}/100</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Infrastructure</span>
+                            <strong>{{ rec.infrastructure_score }}/100</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Healthcare</span>
+                            <strong>{{ rec.healthcare_score }}/100</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Education</span>
+                            <strong>{{ rec.education_score }}/100</strong>
+                        </div>
+
+                        <div class="metric-box">
+                            <span>Housing</span>
+                            <strong>{{ rec.housing_score }}/100</strong>
+                        </div>
+                    </div>
+
+                    <div class="problems">
+                        <h4>Main Observed Issues</h4>
+                        <ul>
+                            {% for problem in rec.main_problems %}
+                                <li>{{ problem }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="action">
+                        <h4>Suggested Policy Action</h4>
+                        <p>{{ rec.suggested_action }}</p>
+                    </div>
+
+                    <p class="source">
+                        AQI Source: {{ rec.aqi_source }}<br>
+                        Traffic Source: {{ rec.traffic_source }}
+                    </p>
+                </div>
+            {% empty %}
+                <p>No recommendations available yet. Please add city data first.</p>
+            {% endfor %}
+        </div>
+
+        <div class="bottom-box">
+            <h2>Time-Based Trend Analysis</h2>
+            <p class="section-subtitle">
+                Six-month city movement based on available historical AQI/PM2.5 data, traffic baseline,
+                and citizen relocation demand.
+            </p>
+
+            <div class="insight-grid">
+                {% for trend in trend_analysis %}
+                    <div class="insight-card">
+                        <h3>{{ trend.city }}</h3>
+
+                        <div class="mini-metric-row">
+                            <div class="mini-metric change-{{ trend.aqi_change.direction }}">
+                                <span>AQI Trend</span>
+                                <strong>{{ trend.aqi_change.value }}</strong>
+                            </div>
+
+                            <div class="mini-metric change-{{ trend.pm25_change.direction }}">
+                                <span>PM2.5 Trend</span>
+                                <strong>{{ trend.pm25_change.value }}</strong>
+                            </div>
+
+                            <div class="mini-metric change-{{ trend.traffic_change.direction }}">
+                                <span>Traffic Trend</span>
+                                <strong>{{ trend.traffic_change.value }}</strong>
+                            </div>
+
+                            <div class="mini-metric change-{{ trend.relocation_demand_change.direction }}">
+                                <span>Relocation Demand</span>
+                                <strong>{{ trend.relocation_demand_change.value }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No trend data available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bottom-box">
+            <h2>Government Profitability Estimator</h2>
+            <p class="section-subtitle">
+                Five-year planning proxy showing expected public revenue gain, service efficiency savings,
+                setup pressure, and net government benefit.
+            </p>
+
+            <div class="insight-grid">
+                {% for item in profitability_estimates %}
+                    <div class="insight-card">
+                        <h3>{{ item.city }}</h3>
+
+                        <div class="mini-metric-row">
+                            <div class="mini-metric">
+                                <span>Tax/Revenue Growth</span>
+                                <strong>+{{ item.revenue_growth }}%</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Service Saving</span>
+                                <strong>+{{ item.service_saving }}%</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Setup Cost Pressure</span>
+                                <strong>-{{ item.setup_cost_pressure }}%</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Net Government Gain</span>
+                                <strong>{{ item.net_gain }}%</strong>
+                            </div>
+                        </div>
+
+                        <span class="roi-label">{{ item.roi_label }}</span>
+                    </div>
+                {% empty %}
+                    <p>No profitability estimate available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="bottom-box">
+            <h2>Citizen Satisfaction Feedback Loop</h2>
+            <p class="section-subtitle">
+                Citizen satisfaction proxy from registered citizen responses and imported Google Form survey data.
+            </p>
+
+            <div class="insight-grid">
+                {% for item in citizen_satisfaction_feedback %}
+                    <div class="insight-card">
+                        <h3>{{ item.city }}</h3>
+                        <p class="score">{{ item.satisfaction_score }}/100</p>
+
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: {{ item.satisfaction_score }}%;"></div>
+                        </div>
+
+                        <div class="mini-metric-row">
+                            <div class="mini-metric">
+                                <span>Current Mentions</span>
+                                <strong>{{ item.current_mentions }}</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Preferred Mentions</span>
+                                <strong>{{ item.preferred_mentions }}</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Complaint Mentions</span>
+                                <strong>{{ item.complaint_mentions }}</strong>
+                            </div>
+
+                            <div class="mini-metric">
+                                <span>Signal</span>
+                                <strong>{{ item.label }}</strong>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <p>No citizen satisfaction data available yet.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>

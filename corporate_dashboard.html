@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corporate Leader Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f8fafc;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #7c3aed;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 24px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            background: #dc2626;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            background: #b91c1c;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #ede9fe, #f5f3ff);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .hero h1 {
+            color: #6d28d9;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #475569;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #334155;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+
+        .form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 10px;
+            color: #6d28d9;
+        }
+
+        .form-section p {
+            margin-bottom: 25px;
+            color: #64748b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn-save {
+            margin-top: 20px;
+            background: #7c3aed;
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #6d28d9;
+        }
+
+        .air-section-title {
+            margin-top: 20px;
+            margin-bottom: 12px;
+            color: #6d28d9;
+        }
+
+        .air-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+            margin-bottom: 30px;
+        }
+
+        .air-card {
+            border-radius: 14px;
+            padding: 16px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .air-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 20px;
+            color: #1e293b;
+        }
+
+        .air-card p {
+            margin: 6px 0;
+            font-size: 15px;
+            color: #1e293b;
+            font-weight: normal;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            color: white;
+            font-size: 13px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .risk-note {
+            margin: 8px 0 0 0;
+            color: #374151;
+        }
+
+        .meta-text {
+            margin: 8px 0 0 0;
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .bottom-box {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .bottom-box h2 {
+            color: #6d28d9;
+            margin-bottom: 10px;
+        }
+
+        .bottom-box ul {
+            padding-left: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Corporate Leader Dashboard</h2>
+        <a href="{% url 'signout' %}">Sign Out</a>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome, {{ request.user.username }} 👋</h1>
+            <p>
+                This dashboard helps corporate leaders track business conditions, relocation opportunities,
+                infrastructure quality, and the effects of citizen movement on company growth.
+            </p>
+        </div>
+
+        {% if success %}
+            <div class="success-message">
+                Your corporate information has been saved successfully.
+            </div>
+        {% endif %}
+
+        <div class="cards">
+            <div class="card">
+                <h3>Current Role</h3>
+                <p>Corporate</p>
+            </div>
+
+            <div class="card">
+                <h3>Growth Status</h3>
+                <p>{% if corporate_data.business_growth_status %}Tracked{% else %}New{% endif %}</p>
+            </div>
+
+            <div class="card">
+                <h3>Form Status</h3>
+                <p>{% if corporate_data.company_name %}Saved{% else %}Pending{% endif %}</p>
+            </div>
+
+            <div class="card">
+                <h3>Decision Access</h3>
+                <p>Active</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Corporate Questionnaire</h2>
+            <p>Please fill in your business and city expansion information below.</p>
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="company_name">Company Name</label>
+                        <input type="text" id="company_name" name="company_name" value="{{ corporate_data.company_name|default:'' }}" placeholder="Enter company name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="business_sector">Business Sector</label>
+                        <select id="business_sector" name="business_sector">
+                            <option value="">Select business sector</option>
+                            <option value="technology" {% if corporate_data.business_sector == 'technology' %}selected{% endif %}>Technology</option>
+                            <option value="finance" {% if corporate_data.business_sector == 'finance' %}selected{% endif %}>Finance</option>
+                            <option value="manufacturing" {% if corporate_data.business_sector == 'manufacturing' %}selected{% endif %}>Manufacturing</option>
+                            <option value="retail" {% if corporate_data.business_sector == 'retail' %}selected{% endif %}>Retail</option>
+                            <option value="healthcare" {% if corporate_data.business_sector == 'healthcare' %}selected{% endif %}>Healthcare</option>
+                            <option value="other" {% if corporate_data.business_sector == 'other' %}selected{% endif %}>Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="current_city">Current City</label>
+                        <input type="text" id="current_city" name="current_city" value="{{ corporate_data.current_city|default:'' }}" placeholder="Enter current city">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="target_city">Target City</label>
+                        <input type="text" id="target_city" name="target_city" value="{{ corporate_data.target_city|default:'' }}" placeholder="Enter target city">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="employee_count">Employee Count</label>
+                        <input type="number" id="employee_count" name="employee_count" value="{{ corporate_data.employee_count|default:'' }}" placeholder="Enter total employees">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="office_cost_level">Office Cost Level</label>
+                        <select id="office_cost_level" name="office_cost_level">
+                            <option value="">Select level</option>
+                            <option value="low" {% if corporate_data.office_cost_level == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if corporate_data.office_cost_level == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if corporate_data.office_cost_level == 'high' %}selected{% endif %}>High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="talent_availability">Talent Availability</label>
+                        <select id="talent_availability" name="talent_availability">
+                            <option value="">Select level</option>
+                            <option value="low" {% if corporate_data.talent_availability == 'low' %}selected{% endif %}>Low</option>
+                            <option value="medium" {% if corporate_data.talent_availability == 'medium' %}selected{% endif %}>Medium</option>
+                            <option value="high" {% if corporate_data.talent_availability == 'high' %}selected{% endif %}>High</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="infrastructure_quality">Infrastructure Quality</label>
+                        <select id="infrastructure_quality" name="infrastructure_quality">
+                            <option value="">Select quality</option>
+                            <option value="poor" {% if corporate_data.infrastructure_quality == 'poor' %}selected{% endif %}>Poor</option>
+                            <option value="average" {% if corporate_data.infrastructure_quality == 'average' %}selected{% endif %}>Average</option>
+                            <option value="good" {% if corporate_data.infrastructure_quality == 'good' %}selected{% endif %}>Good</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="business_growth_status">Business Growth Status</label>
+                        <select id="business_growth_status" name="business_growth_status">
+                            <option value="">Select status</option>
+                            <option value="growing" {% if corporate_data.business_growth_status == 'growing' %}selected{% endif %}>Growing</option>
+                            <option value="stable" {% if corporate_data.business_growth_status == 'stable' %}selected{% endif %}>Stable</option>
+                            <option value="declining" {% if corporate_data.business_growth_status == 'declining' %}selected{% endif %}>Declining</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="relocation_interest">Relocation Interest</label>
+                        <select id="relocation_interest" name="relocation_interest">
+                            <option value="">Select interest</option>
+                            <option value="yes" {% if corporate_data.relocation_interest == 'yes' %}selected{% endif %}>Yes</option>
+                            <option value="no" {% if corporate_data.relocation_interest == 'no' %}selected{% endif %}>No</option>
+                            <option value="maybe" {% if corporate_data.relocation_interest == 'maybe' %}selected{% endif %}>Maybe</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="corporate_notes">Corporate Notes</label>
+                        <textarea id="corporate_notes" name="corporate_notes" placeholder="Write business remarks or strategy notes...">{{ corporate_data.corporate_notes|default:'' }}</textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-save">Save Corporate Information</button>
+            </form>
+        </div>
+
+        <h2 class="air-section-title">Air Quality Snapshot (Real-time vs Baseline)</h2>
+
+        <div class="air-grid">
+            {% for c in air_cards %}
+            <div class="air-card" style="border:2px solid {{ c.risk_color }};">
+                <h3>{{ c.city }}</h3>
+
+                <p><b>Now (PM2.5):</b>
+                    {% if c.now_pm25 is not None %}
+                        {{ c.now_pm25|floatformat:1 }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+
+                <p><b>Baseline avg (Historical):</b>
+                    {% if c.baseline_pm25 is not None %}
+                        {{ c.baseline_pm25|floatformat:1 }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+
+                <p><b>Change:</b>
+                    {% if c.delta_pm25 is not None %}
+                        {{ c.delta_pm25|floatformat:1 }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </p>
+
+                <p>
+                    <b>Risk:</b>
+                    <span class="risk-badge" style="background-color: {{ c.risk_color }};">
+                        {{ c.risk_label }}
+                    </span>
+                </p>
+
+                <p class="risk-note">{{ c.risk_note }}</p>
+
+                <p class="meta-text">
+                    Source: {{ c.source }}{% if c.updated_at %} | Updated: {{ c.updated_at }}{% endif %}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="bottom-box">
+            <h2>What this dashboard will do later</h2>
+            <ul>
+                <li>Track company growth or decline based on city movement</li>
+                <li>Analyze relocation opportunities and employee concentration</li>
+                <li>Compare office cost, infrastructure, and talent availability</li>
+                <li>Support smarter expansion decisions for corporate leaders</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
