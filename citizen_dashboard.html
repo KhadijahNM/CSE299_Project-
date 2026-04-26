@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Citizen Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .navbar {
+            background: #1e3a8a;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 24px;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: white;
+            background: #dc2626;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .navbar a:hover {
+            background: #b91c1c;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #dbeafe, #eff6ff);
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 25px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .hero h1 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #475569;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .success-message {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #334155;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 26px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        .form-section {
+            background: white;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+            margin-bottom: 30px;
+        }
+
+        .form-section h2 {
+            margin-bottom: 10px;
+            color: #1e3a8a;
+        }
+
+        .form-section p {
+            margin-bottom: 25px;
+            color: #64748b;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .btn-save {
+            margin-top: 20px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background: #1d4ed8;
+        }
+
+        .bottom-box {
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        }
+
+        .bottom-box h2 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .bottom-box ul {
+            padding-left: 20px;
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        .recommendation-text {
+            font-size: 15px !important;
+            color: #475569 !important;
+            font-weight: normal !important;
+            margin-top: 8px;
+            line-height: 1.7;
+        }
+
+        .reason-list {
+            margin-top: 10px;
+            padding-left: 20px;
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .reason-title {
+            color: #1e3a8a;
+            font-weight: bold;
+            margin-top: 12px;
+            display: block;
+        }
+
+        .compact-grid {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    align-items: start;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>Citizen Dashboard</h2>
+        <a href="{% url 'signout' %}">Sign Out</a>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Welcome, {{ request.user.username }} 👋</h1>
+            <p>
+                This dashboard helps citizens share their living, commuting, and city preference information.
+                Based on your priorities, the system will suggest better city options for you.
+            </p>
+        </div>
+
+        {% if success %}
+            <div class="success-message">
+                Your information has been saved successfully.
+            </div>
+        {% endif %}
+
+        <div class="cards">
+            <div class="card">
+                <h3>Current Role</h3>
+                <p>Citizen</p>
+            </div>
+
+            <div class="card">
+                <h3>Recommended Cities</h3>
+                <p>{{ recommendations|length }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Questionnaire Status</h3>
+                <p>{% if citizen_data.current_city %}Saved{% else %}Pending{% endif %}</p>
+            </div>
+
+            <div class="card">
+                <h3>System Access</h3>
+                <p>Active</p>
+            </div>
+        </div>
+
+        <div class="form-section">
+    <h2>Citizen Questionnaire</h2>
+    <p>Please fill in your information below.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-grid compact-grid">
+            <div class="form-group">
+                <label for="current_city">Current City</label>
+                <select id="current_city" name="current_city">
+                    <option value="">Select your current city</option>
+                    <option value="Dhaka" {% if citizen_data.current_city == 'Dhaka' %}selected{% endif %}>Dhaka</option>
+                    <option value="Chattogram" {% if citizen_data.current_city == 'Chattogram' %}selected{% endif %}>Chattogram</option>
+                    <option value="Rajshahi" {% if citizen_data.current_city == 'Rajshahi' %}selected{% endif %}>Rajshahi</option>
+                    <option value="Khulna" {% if citizen_data.current_city == 'Khulna' %}selected{% endif %}>Khulna</option>
+                    <option value="Sylhet" {% if citizen_data.current_city == 'Sylhet' %}selected{% endif %}>Sylhet</option>
+                    <option value="Barishal" {% if citizen_data.current_city == 'Barishal' %}selected{% endif %}>Barishal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="preferred_city">Preferred City</label>
+                <select id="preferred_city" name="preferred_city">
+                    <option value="">Select preferred city</option>
+                    <option value="Dhaka" {% if citizen_data.preferred_city == 'Dhaka' %}selected{% endif %}>Dhaka</option>
+                    <option value="Chattogram" {% if citizen_data.preferred_city == 'Chattogram' %}selected{% endif %}>Chattogram</option>
+                    <option value="Rajshahi" {% if citizen_data.preferred_city == 'Rajshahi' %}selected{% endif %}>Rajshahi</option>
+                    <option value="Khulna" {% if citizen_data.preferred_city == 'Khulna' %}selected{% endif %}>Khulna</option>
+                    <option value="Sylhet" {% if citizen_data.preferred_city == 'Sylhet' %}selected{% endif %}>Sylhet</option>
+                    <option value="Barishal" {% if citizen_data.preferred_city == 'Barishal' %}selected{% endif %}>Barishal</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="job_sector">Job Sector</label>
+                <select id="job_sector" name="job_sector">
+                    <option value="">Select job sector</option>
+                    <option value="it" {% if citizen_data.job_sector == 'it' %}selected{% endif %}>IT</option>
+                    <option value="business" {% if citizen_data.job_sector == 'business' %}selected{% endif %}>Business</option>
+                    <option value="education" {% if citizen_data.job_sector == 'education' %}selected{% endif %}>Education</option>
+                    <option value="health" {% if citizen_data.job_sector == 'health' %}selected{% endif %}>Health</option>
+                    <option value="government" {% if citizen_data.job_sector == 'government' %}selected{% endif %}>Government</option>
+                    <option value="other" {% if citizen_data.job_sector == 'other' %}selected{% endif %}>Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="salary_range">Salary Range</label>
+                <select id="salary_range" name="salary_range">
+                    <option value="">Select salary range</option>
+                    <option value="low" {% if citizen_data.salary_range == 'low' %}selected{% endif %}>Low</option>
+                    <option value="medium" {% if citizen_data.salary_range == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="high" {% if citizen_data.salary_range == 'high' %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="commute_time">Daily Commute Time (minutes)</label>
+                <input type="number" id="commute_time" name="commute_time" value="{{ citizen_data.commute_time|default:'' }}" placeholder="e.g. 45">
+            </div>
+
+            <div class="form-group">
+                <label for="transport_mode">Transport Mode</label>
+                <select id="transport_mode" name="transport_mode">
+                    <option value="">Select transport mode</option>
+                    <option value="bus" {% if citizen_data.transport_mode == 'bus' %}selected{% endif %}>Bus</option>
+                    <option value="car" {% if citizen_data.transport_mode == 'car' %}selected{% endif %}>Car</option>
+                    <option value="bike" {% if citizen_data.transport_mode == 'bike' %}selected{% endif %}>Bike</option>
+                    <option value="train" {% if citizen_data.transport_mode == 'train' %}selected{% endif %}>Train</option>
+                    <option value="walk" {% if citizen_data.transport_mode == 'walk' %}selected{% endif %}>Walk</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="housing_priority">Housing Priority</label>
+                <select id="housing_priority" name="housing_priority">
+                    <option value="3" {% if citizen_data.housing_priority|stringformat:"s" == "3" %}selected{% endif %}>Low</option>
+                    <option value="5" {% if citizen_data.housing_priority|stringformat:"s" == "5" %}selected{% endif %}>Medium</option>
+                    <option value="8" {% if citizen_data.housing_priority|stringformat:"s" == "8" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="health_priority">Health Priority</label>
+                <select id="health_priority" name="health_priority">
+                    <option value="3" {% if citizen_data.health_priority|stringformat:"s" == "3" %}selected{% endif %}>Low</option>
+                    <option value="5" {% if citizen_data.health_priority|stringformat:"s" == "5" %}selected{% endif %}>Medium</option>
+                    <option value="8" {% if citizen_data.health_priority|stringformat:"s" == "8" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="education_priority">Education Priority</label>
+                <select id="education_priority" name="education_priority">
+                    <option value="3" {% if citizen_data.education_priority|stringformat:"s" == "3" %}selected{% endif %}>Low</option>
+                    <option value="5" {% if citizen_data.education_priority|stringformat:"s" == "5" %}selected{% endif %}>Medium</option>
+                    <option value="8" {% if citizen_data.education_priority|stringformat:"s" == "8" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="cost_priority">Cost Priority</label>
+                <select id="cost_priority" name="cost_priority">
+                    <option value="3" {% if citizen_data.cost_priority|stringformat:"s" == "3" %}selected{% endif %}>Low</option>
+                    <option value="5" {% if citizen_data.cost_priority|stringformat:"s" == "5" %}selected{% endif %}>Medium</option>
+                    <option value="8" {% if citizen_data.cost_priority|stringformat:"s" == "8" %}selected{% endif %}>High</option>
+                </select>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="additional_notes">Additional Notes</label>
+                <textarea id="additional_notes" name="additional_notes" placeholder="Write anything important here...">{{ citizen_data.additional_notes|default:'' }}</textarea>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-save">Save Information</button>
+    </form>
+</div>
+        <div class="form-section">
+            <h2>Top City Recommendations</h2>
+            <p>Based on your current city, commute, and priorities.</p>
+
+            {% if recommendations %}
+                <div class="cards">
+                    {% for item in recommendations %}
+                        <div class="card">
+                            <h3>{{ item.city.city_name }}</h3>
+                            <p style="font-size:18px; color:#0f172a; margin-top:10px;">
+                                Score: {{ item.score }}
+                            </p>
+                            <p class="recommendation-text">
+                                Average Rent: ৳{{ item.city.avg_monthly_rent }}
+                            </p>
+                            <p class="recommendation-text">
+                                Average Commute: {{ item.city.avg_commute_minutes }} minutes
+                            </p>
+
+                            {% if item.reasons %}
+                                <span class="reason-title">Why recommended:</span>
+                                <ul class="reason-list">
+                                    {% for reason in item.reasons %}
+                                        <li>{{ reason }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p style="color:#64748b;">Fill in your information and save to see recommendations.</p>
+            {% endif %}
+        </div>
+
+        <div class="form-section">
+    <h2>Before vs After Comparison</h2>
+    <p>See how your current situation compares with your best recommended city.</p>
+
+    {% if comparison %}
+        <div class="cards">
+            <div class="card">
+                <h3>Your Current Situation</h3>
+                <p style="font-size:18px; color:#0f172a;">{{ comparison.current_city }}</p>
+                <p class="recommendation-text">
+                    Current commute: {{ comparison.current_commute }} minutes
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Best Recommended City</h3>
+                <p style="font-size:18px; color:#0f172a;">{{ comparison.recommended_city }}</p>
+                <p class="recommendation-text">
+                    Average commute: {{ comparison.recommended_commute }} minutes
+                </p>
+                <p class="recommendation-text">
+                    Average rent: ৳{{ comparison.recommended_rent }}
+                </p>
+                <p class="recommendation-text">
+                    Recommendation score: {{ comparison.recommendation_score }}
+                </p>
+            </div>
+
+            <div class="card">
+                <h3>Estimated Improvement</h3>
+                <p style="font-size:18px; color:#0f172a;">{{ comparison.time_saved }} min saved</p>
+
+                {% if comparison.reasons %}
+                    <span class="reason-title">Main benefits:</span>
+                    <ul class="reason-list">
+                        {% for reason in comparison.reasons %}
+                            <li>{{ reason }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    {% else %}
+        <p style="color:#64748b;">Fill in your city and priorities to see a comparison.</p>
+    {% endif %}
+</div>
+
+        <div class="bottom-box">
+            <h2>What this dashboard can do</h2>
+            <ul>
+                <li>Show suitable city recommendations</li>
+                <li>Compare current city vs recommended city</li>
+                <li>Track commuting and living condition changes</li>
+                <li>Help policymakers and corporate leaders understand citizen movement trends</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

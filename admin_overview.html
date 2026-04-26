@@ -139,7 +139,7 @@
             <h1>Welcome, Admin {{ request.user.username }} 👋</h1>
             <p>
                 This dashboard gives a complete overview of users, role distribution,
-                and submitted questionnaire data across the Urban Balance Management System.
+                questionnaire data, and imported real survey insights across the Urban Balance Management System.
             </p>
         </div>
 
@@ -179,6 +179,33 @@
             <div class="card">
                 <h3>Corporate Forms Submitted</h3>
                 <p>{{ corporate_forms }}</p>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Total Survey Responses</h3>
+                <p>{{ total_survey_responses }}</p>
+            </div>
+
+            <div class="card">
+                <h3>English Responses</h3>
+                <p>{{ english_responses }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Bangla Responses</h3>
+                <p>{{ bangla_responses }}</p>
+            </div>
+        </div>
+
+        <div class="section-box">
+            <h2>Survey Insight Summary</h2>
+            <div class="status-list">
+                <p><strong>Most common urban problem:</strong> {{ most_common_problem }}</p>
+                <p><strong>Top relocation reason:</strong> {{ top_relocation_reason }}</p>
+                <p><strong>Most common relocation response:</strong> {{ most_common_likelihood }}</p>
+                <p><strong>Imported survey coverage:</strong> {{ total_survey_responses }} total responses</p>
             </div>
         </div>
 
